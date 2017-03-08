@@ -18,3 +18,9 @@ class Node(object):
 		"""
 
 		raise NotImplemented
+
+class Input(Node):
+	def __init__(self):
+		# An Input node has no inbound nodes,
+		# so no need to pass anything to the Node instantiator.
+		Node.__init__(self)
