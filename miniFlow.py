@@ -46,3 +46,10 @@ class Add(Node):
 		"""
 		You'll be writing code here in the next quiz!
 		"""
+
+def topological_sort(feed_dict):
+	"""
+	Sort generic nodes in topological order using Kahn's Algorithm
+	'feed_dict': A dictionary where the key is a 'Input' node and the value is the respective value feed to that node.
+	Returns a list of sorted nodes.
+	"""
