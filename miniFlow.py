@@ -53,3 +53,20 @@ def topological_sort(feed_dict):
 	'feed_dict': A dictionary where the key is a 'Input' node and the value is the respective value feed to that node.
 	Returns a list of sorted nodes.
 	"""
+
+	input_nodes = [n for n in feed_dict.keys()]
+
+	G = {}
+	nodes = [n for n in input_nodes]
+	while len(nodes) > 0:
+		n = nodes.pop(0)
+		if n not in G:
+			G[n] = {'in': set(), 'out': set()}
+		for m in n.outbound_nodes:
+			if m not in G:
+				{'in': set(), 'out': set()}
+			G[n]['out'].add(m)
+			G[m]['in'].add(n)
+			nodes.append(m)
+
+	return 0
