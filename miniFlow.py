@@ -39,13 +39,38 @@ class Input(Node):
 			self.value = value
 
 class Add(Node):
-	def __init__(self, x, y):
-		Node.__init__(self, [x, y])
+    # You may need to change this...
+    def __init__(self, *args):
+        Node.__init__(self, list(args))
 
-	def forward(self):
-		"""
-		You'll be writing code here in the next quiz!
-		"""
+    def forward(self):
+        """
+        For reference, here's the old way from the last
+        quiz. You'll want to write code here.
+        """
+        finalsum = 0
+        for node in self.inbound_nodes:
+            finalsum += node.value
+        # x_value = self.inbound_nodes[0].value
+        # y_value = self.inbound_nodes[1].value
+        self.value = finalsum
+        
+class Mul(Node):
+    # You may need to change this...
+    def __init__(self, *args):
+        Node.__init__(self, list(args))
+
+    def forward(self):
+        """
+        For reference, here's the old way from the last
+        quiz. You'll want to write code here.
+        """
+        finalproduct = 1
+        for node in self.inbound_nodes:
+            finalproduct *= node.value
+        # x_value = self.inbound_nodes[0].value
+        # y_value = self.inbound_nodes[1].value
+        self.value = finalproduct
 
 def topological_sort(feed_dict):
 	"""
@@ -69,4 +94,37 @@ def topological_sort(feed_dict):
 			G[m]['in'].add(n)
 			nodes.append(m)
 
-	return 0
+    L = []
+    S = set(input_nodes)
+    while len(S) > 0:
+        n = S.pop()
+
+        if isinstance(n, Input):
+            n.value = feed_dict[n]
+
+        L.append(n)
+        for m in n.outbound_nodes:
+            G[n]['out'].remove(m)
+            G[m]['in'].remove(n)
+            # if no other incoming edges add to S
+            if len(G[m]['in']) == 0:
+                S.add(m)
+    return L
+
+def forward_pass(output_node, sorted_nodes):
+    """
+    Performs a forward pass through a list of sorted nodes.
+
+    Arguments:
+
+        `output_node`: A node in the graph, should be the output node (have no outgoing edges).
+        `sorted_nodes`: A topologically sorted list of nodes.
+
+    Returns the output Node's value
+    """
+
+    for n in sorted_nodes:
+        n.forward()
+
+    return output_node.value
+
